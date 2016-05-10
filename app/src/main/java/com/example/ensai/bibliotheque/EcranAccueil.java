@@ -1,9 +1,11 @@
 package com.example.ensai.bibliotheque;
 
+import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -21,7 +23,7 @@ public class EcranAccueil extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecran_accueil);
-        //StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+        /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         String contenu = null;
         try {
             contenu = run("http://www.omdbapi.com/?t=frozen&y=&plot=short&r=json");
@@ -30,7 +32,7 @@ public class EcranAccueil extends AppCompatActivity {
             Toast.makeText(this,film.toString(),Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.e("TAG","Erreur",e);
-        }
+        }*/
 
     }
 
@@ -43,4 +45,10 @@ public class EcranAccueil extends AppCompatActivity {
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
-}
+
+    public void clickFilms(View v) {
+        Intent intent = new Intent(this, EcranFilm.class);
+        startActivity(intent);
+    }
+
+    }

@@ -13,7 +13,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Film"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="clickFilms"/>
 
         <Button
             android:layout_width="wrap_content"
@@ -21,5 +22,10 @@
             android:text="Série"
             android:layout_weight="1"/>
     </LinearLayout>
-
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nouvelle tâche"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_purple" />
 </RelativeLayout>
