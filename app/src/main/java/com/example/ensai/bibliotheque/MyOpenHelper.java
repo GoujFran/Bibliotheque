@@ -22,8 +22,13 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         values.put("title","Frozen");
         values.put("year","2013");
         values.put("director","Chris Buck");
-        values.put("imdbID","tt2294629");
+        values.put("imdbID", "tt2294629");
         long rowID = db.insert("films",null,values);
+        values.put("title","Frozen River");
+        values.put("year","2008");
+        values.put("director","Chris Buck");
+        values.put("imdbID","tt0978759");
+        rowID = db.insert("films",null,values);
     }
 
     @Override

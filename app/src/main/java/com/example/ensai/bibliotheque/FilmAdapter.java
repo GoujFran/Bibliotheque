@@ -42,9 +42,14 @@ public class FilmAdapter extends BaseAdapter {
         Film film = (Film) getItem(position);
         View view =  LayoutInflater.from(context).inflate(R.layout.item_film, parent, false);
         TextView titre = (TextView) view.findViewById(R.id.titre);
-        TextView soustitre = (TextView) view.findViewById(R.id.soustitre);
-        titre.setText(film.getTitle());
+        TextView soustitre = (TextView) view.findViewById(R.id.realisateur);
+        titre.setText(film.getTitle() + " (" + film.getYear() + ") ");
         soustitre.setText(film.getDirector());
         return view;
+    }
+
+    public TextView getTextView(View view) {
+        TextView titre = (TextView) view.findViewById(R.id.titre);
+        return titre;
     }
 }
