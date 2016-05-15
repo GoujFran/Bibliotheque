@@ -37,6 +37,7 @@ public class EcranFilm extends AppCompatActivity {
             frozen.setTitle(cursor.getString(0));
             frozen.setYear(cursor.getString(1));
             frozen.setDirector(cursor.getString(6));
+            frozen.setPoster(cursor.getString(12));
             frozen.setImdbID(cursor.getString(15));
             liste.add(frozen);
             listeTitre.add(frozen.getTitle() + " (" + frozen.getYear() + ") ");

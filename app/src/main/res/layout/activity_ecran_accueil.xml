@@ -5,27 +5,39 @@
     android:layout_height="match_parent"
     tools:context="com.example.ensai.bibliotheque.EcranAccueil">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Film"
+            android:src="@drawable/ic_action_film"
             android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
             android:onClick="clickFilms"/>
-
-        <Button
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Série"
-            android:layout_weight="1"/>
+            android:text="a"
+            android:textColor="@android:color/background_light"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_serie"
+            android:layout_weight="1"
+            android:paddingTop="10sp"
+            android:paddingBottom="10sp"
+            android:background="@android:color/darker_gray"/>
     </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nouvelle tâche"
+        android:text="A venir"
         android:layout_alignParentBottom="true"
         android:background="@android:color/holo_purple" />
 </RelativeLayout>
