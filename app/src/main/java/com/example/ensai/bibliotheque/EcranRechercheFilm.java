@@ -20,7 +20,7 @@ public class EcranRechercheFilm extends AppCompatActivity {
 
     private List<Film> listeFilm = new ArrayList<Film>();
     private ArrayList<String> listeBase = new ArrayList<String>();
-    final private Context contexte = this;
+    private Context contexte = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,6 @@
 package com.example.ensai.bibliotheque;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,12 +11,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class FicheFilm extends AppCompatActivity {
+
+    private Film film = new Film();
+    private Context contexte = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +35,12 @@ public class FicheFilm extends AppCompatActivity {
         setContentView(R.layout.activity_fiche_film);
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+        film.setImdbID(id);
 
         MyOpenHelper helper = new MyOpenHelper(this);
         SQLiteDatabase readableDB = helper.getReadableDatabase();
         Cursor cursor = readableDB.rawQuery("SELECT * FROM films WHERE imdbID=?;", new String[]{id});
         int nbRows = cursor.getCount();
-        Film film = new Film();
 
         if(nbRows==1){
             while(cursor.moveToNext()){
@@ -48,31 +60,77 @@ public class FicheFilm extends AppCompatActivity {
                 film.setMetascore(cursor.getString(13));
                 film.setImdbRating(cursor.getString(14));
                 film.setImdbID(cursor.getString(15));
+
+                TextView titre = (TextView) findViewById(R.id.fTitre);
+                titre.setText(film.getTitle());
+                TextView date = (TextView) findViewById(R.id.fDate);
+                date.setText(date.getText() +" "+ film.getYear());
+                TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
+                realisateur.setText(realisateur.getText() +" "+ film.getDirector());
+                TextView acteurs = (TextView) findViewById(R.id.fActeurs);
+                acteurs.setText(acteurs.getText() +" "+ film.getActors());
+                TextView pays = (TextView) findViewById(R.id.fPays);
+                pays.setText(pays.getText() +" "+ film.getCountry());
+                TextView genre = (TextView) findViewById(R.id.fGenre);
+                genre.setText(genre.getText() +" "+ film.getGenre());
+                TextView resume = (TextView) findViewById(R.id.fResume);
+                resume.setText(resume.getText() +" "+ film.getPlot());
+                TextView rated = (TextView) findViewById(R.id.fRated);
+                rated.setText(rated.getText() +" "+ film.getRated());
+                TextView duree = (TextView) findViewById(R.id.fDuree);
+                duree.setText(duree.getText() +" "+ film.getRuntime());
+                TextView recompenses = (TextView) findViewById(R.id.fAwards);
+                recompenses.setText(recompenses.getText() +" "+ film.getAwards());
             }
         } else {
-            //faire une requête internet
-        }
+            Runnable recherche = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String json = rechercheInternet("http://www.omdbapi.com/?i=" + film.getImdbID() + "&y=&plot=short&r=json");
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                        film = gson.fromJson(json, Film.class);
 
-        TextView titre = (TextView) findViewById(R.id.fTitre);
-        titre.setText(film.getTitle());
-        TextView date = (TextView) findViewById(R.id.fDate);
-        date.setText(date.getText() +" "+ film.getYear());
-        TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
-        realisateur.setText(realisateur.getText() +" "+ film.getDirector());
-        TextView acteurs = (TextView) findViewById(R.id.fActeurs);
-        acteurs.setText(acteurs.getText() +" "+ film.getActors());
-        TextView pays = (TextView) findViewById(R.id.fPays);
-        pays.setText(pays.getText() +" "+ film.getCountry());
-        TextView genre = (TextView) findViewById(R.id.fGenre);
-        genre.setText(genre.getText() +" "+ film.getGenre());
-        TextView resume = (TextView) findViewById(R.id.fResume);
-        resume.setText(resume.getText() +" "+ film.getPlot());
-        TextView rated = (TextView) findViewById(R.id.fRated);
-        rated.setText(rated.getText() +" "+ film.getRated());
-        TextView duree = (TextView) findViewById(R.id.fDuree);
-        duree.setText(duree.getText() +" "+ film.getRuntime());
-        TextView recompenses = (TextView) findViewById(R.id.fAwards);
-        recompenses.setText(recompenses.getText() +" "+ film.getAwards());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextView titre = (TextView) findViewById(R.id.fTitre);
+                                titre.setText(film.getTitle());
+                                TextView date = (TextView) findViewById(R.id.fDate);
+                                date.setText(date.getText() +" "+ film.getYear());
+                                TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
+                                realisateur.setText(realisateur.getText() +" "+ film.getDirector());
+                                TextView acteurs = (TextView) findViewById(R.id.fActeurs);
+                                acteurs.setText(acteurs.getText() +" "+ film.getActors());
+                                TextView pays = (TextView) findViewById(R.id.fPays);
+                                pays.setText(pays.getText() +" "+ film.getCountry());
+                                TextView genre = (TextView) findViewById(R.id.fGenre);
+                                genre.setText(genre.getText() +" "+ film.getGenre());
+                                TextView resume = (TextView) findViewById(R.id.fResume);
+                                resume.setText(resume.getText() +" "+ film.getPlot());
+                                TextView rated = (TextView) findViewById(R.id.fRated);
+                                rated.setText(rated.getText() +" "+ film.getRated());
+                                TextView duree = (TextView) findViewById(R.id.fDuree);
+                                duree.setText(duree.getText() +" "+ film.getRuntime());
+                                TextView recompenses = (TextView) findViewById(R.id.fAwards);
+                                recompenses.setText(recompenses.getText() +" "+ film.getAwards());
+                            }
+                        });
+                    } catch (IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(contexte, "Problème de connexion", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
+                }
+            };
+            new Thread(recherche).start();
+        }
+        Toast.makeText(contexte,film.getTitle(),Toast.LENGTH_LONG).show();
+
+
 
         ImageView poster = (ImageView) findViewById(R.id.poster);
         /*try {
@@ -86,5 +144,12 @@ public class FicheFilm extends AppCompatActivity {
         }*/
 
 
+    }
+
+    String rechercheInternet(String url) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        Response response = client.newCall(request).execute();
+        return response.body().string();
     }
 }

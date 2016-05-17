@@ -29,7 +29,7 @@ public class EcranFilm extends AppCompatActivity {
     private ArrayList<Film> liste = new ArrayList<Film>();
     private ArrayList<String> listeBase = new ArrayList<String>();
     private ArrayList<String> listeTitre = new ArrayList<String>();
-    final private Context contexte = this;
+    private Context contexte = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,9 +103,12 @@ public class EcranFilm extends AppCompatActivity {
             int index = listeTitre.indexOf(contenu);
             lancerFiche(this,index);
         }
+        if(contenu.isEmpty()){
+            Toast.makeText(this,"Veuillez entrer un nom de film",Toast.LENGTH_LONG).show();
+        }
         else {
             if(!isOnline()) {
-                Toast.makeText(this,"La connexion Internet n'est pas disponible.",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"La connexion Internet n'est pas disponible",Toast.LENGTH_LONG).show();
                 lancerRecherche(this,contenu,"{\"Response\":\"False\",\"Error\":\"Movie not found!\"}");
             } else {
                 Runnable recherche = new Runnable() {
