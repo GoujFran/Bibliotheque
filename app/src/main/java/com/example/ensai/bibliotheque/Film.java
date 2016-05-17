@@ -1,5 +1,9 @@
 package com.example.ensai.bibliotheque;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -215,5 +219,28 @@ public class Film {
 
     public String getType() {
         return type;
+    }
+
+    public void inserer(Context contexte) {
+        MyOpenHelper helper = new MyOpenHelper(contexte);
+        SQLiteDatabase writableDB = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title",title);
+        values.put("year",year);
+        values.put("rated",rated);
+        values.put("released",released);
+        values.put("runtime",runtime);
+        values.put("genre",genre);
+        values.put("director",director);
+        values.put("writer",writer);
+        values.put("actors",actors);
+        values.put("plot",plot);
+        values.put("country",country);
+        values.put("awards",awards);
+        values.put("poster",poster);
+        values.put("metascore",metascore);
+        values.put("imdbRating",imdbRating);
+        values.put("imdbID", imdbID);
+        long rowID = writableDB.insert("films", null, values);
     }
 }

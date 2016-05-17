@@ -1,5 +1,6 @@
 package com.example.ensai.bibliotheque;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -26,10 +28,11 @@ public class EcranAccueil extends AppCompatActivity {
         /*StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
         String contenu = null;
         try {
-            contenu = run("http://www.omdbapi.com/?t=frozen&y=&plot=short&r=json");
+            contenu = run("http://www.omdbapi.com/?s=frozen&y=&plot=short&r=json");
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            Film film = gson.fromJson(contenu, Film.class);
-            Toast.makeText(this,film.toString(),Toast.LENGTH_LONG).show();
+            Recherche recherche = gson.fromJson(contenu, Recherche.class);
+            List<FilmRecherche> listeRecherche = recherche.getSearch();
+            Toast.makeText(this,listeRecherche.get(0).getTitle().toString(),Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             Log.e("TAG","Erreur",e);
         }*/

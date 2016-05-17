@@ -23,30 +23,35 @@ public class FicheFilm extends AppCompatActivity {
         setContentView(R.layout.activity_fiche_film);
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
+
         MyOpenHelper helper = new MyOpenHelper(this);
         SQLiteDatabase readableDB = helper.getReadableDatabase();
         Cursor cursor = readableDB.rawQuery("SELECT * FROM films WHERE imdbID=?;", new String[]{id});
         int nbRows = cursor.getCount();
         Film film = new Film();
-        while(cursor.moveToNext()){
-            film.setTitle(cursor.getString(0));
-            film.setYear(cursor.getString(1));
-            film.setRated(cursor.getString(2));
-            film.setReleased(cursor.getString(3));
-            film.setRuntime(cursor.getString(4));
-            film.setGenre(cursor.getString(5));
-            film.setDirector(cursor.getString(6));
-            film.setWriter(cursor.getString(7));
-            film.setActors(cursor.getString(8));
-            film.setPlot(cursor.getString(9));
-            film.setCountry(cursor.getString(10));
-            film.setAwards(cursor.getString(11));
-            film.setPoster(cursor.getString(12));
-            film.setMetascore(cursor.getString(13));
-            film.setImdbRating(cursor.getString(14));
-            film.setImdbID(cursor.getString(15));
-        }
 
+        if(nbRows==1){
+            while(cursor.moveToNext()){
+                film.setTitle(cursor.getString(0));
+                film.setYear(cursor.getString(1));
+                film.setRated(cursor.getString(2));
+                film.setReleased(cursor.getString(3));
+                film.setRuntime(cursor.getString(4));
+                film.setGenre(cursor.getString(5));
+                film.setDirector(cursor.getString(6));
+                film.setWriter(cursor.getString(7));
+                film.setActors(cursor.getString(8));
+                film.setPlot(cursor.getString(9));
+                film.setCountry(cursor.getString(10));
+                film.setAwards(cursor.getString(11));
+                film.setPoster(cursor.getString(12));
+                film.setMetascore(cursor.getString(13));
+                film.setImdbRating(cursor.getString(14));
+                film.setImdbID(cursor.getString(15));
+            }
+        } else {
+            //faire une requête internet
+        }
 
         TextView titre = (TextView) findViewById(R.id.fTitre);
         titre.setText(film.getTitle());
