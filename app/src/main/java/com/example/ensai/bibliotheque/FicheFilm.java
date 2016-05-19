@@ -128,7 +128,6 @@ public class FicheFilm extends AppCompatActivity {
             };
             new Thread(recherche).start();
         }
-        Toast.makeText(contexte,film.getTitle(),Toast.LENGTH_LONG).show();
 
 
 
@@ -151,5 +150,55 @@ public class FicheFilm extends AppCompatActivity {
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
         return response.body().string();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        TextView titre = (TextView) findViewById(R.id.fTitre);
+        outState.putString("title",titre.getText().toString());
+        TextView date = (TextView) findViewById(R.id.fDate);
+        outState.putString("date",date.getText().toString());
+        TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
+        outState.putString("réalisateur", realisateur.getText().toString());
+        TextView acteurs = (TextView) findViewById(R.id.fActeurs);
+        outState.putString("acteurs", acteurs.getText().toString());
+        TextView pays = (TextView) findViewById(R.id.fPays);
+        outState.putString("pays", pays.getText().toString());
+        TextView genre = (TextView) findViewById(R.id.fGenre);
+        outState.putString("genre",genre.getText().toString());
+        TextView resume = (TextView) findViewById(R.id.fResume);
+        outState.putString("résumé", resume.getText().toString());
+        TextView rated = (TextView) findViewById(R.id.fRated);
+        outState.putString("rated", rated.getText().toString());
+        TextView duree = (TextView) findViewById(R.id.fDuree);
+        outState.putString("durée", duree.getText().toString());
+        TextView recompenses = (TextView) findViewById(R.id.fAwards);
+        outState.putString("récompenses",recompenses.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        TextView titre = (TextView) findViewById(R.id.fTitre);
+        titre.setText(savedInstanceState.getString("title"));
+        TextView date = (TextView) findViewById(R.id.fDate);
+        date.setText(savedInstanceState.getString("date"));
+        TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
+        realisateur.setText(savedInstanceState.getString("réalisateur"));
+        TextView acteurs = (TextView) findViewById(R.id.fActeurs);
+        acteurs.setText(savedInstanceState.getString("acteurs"));
+        TextView pays = (TextView) findViewById(R.id.fPays);
+        pays.setText(savedInstanceState.getString("pays"));
+        TextView genre = (TextView) findViewById(R.id.fGenre);
+        genre.setText(savedInstanceState.getString("genre"));
+        TextView resume = (TextView) findViewById(R.id.fResume);
+        resume.setText(savedInstanceState.getString("résumé"));
+        TextView rated = (TextView) findViewById(R.id.fRated);
+        rated.setText(savedInstanceState.getString("rated"));
+        TextView duree = (TextView) findViewById(R.id.fDuree);
+        duree.setText(savedInstanceState.getString("durée"));
+        TextView recompenses = (TextView) findViewById(R.id.fAwards);
+        recompenses.setText(savedInstanceState.getString("récompenses"));
     }
 }
