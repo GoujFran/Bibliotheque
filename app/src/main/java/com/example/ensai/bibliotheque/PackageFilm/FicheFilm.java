@@ -1,24 +1,23 @@
-package com.example.ensai.bibliotheque;
+package com.example.ensai.bibliotheque.PackageFilm;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ensai.bibliotheque.MyOpenHelper;
+import com.example.ensai.bibliotheque.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -61,26 +60,28 @@ public class FicheFilm extends AppCompatActivity {
                 film.setImdbRating(cursor.getString(14));
                 film.setImdbID(cursor.getString(15));
 
-                TextView titre = (TextView) findViewById(R.id.fTitre);
+                TextView titre = (TextView) findViewById(R.id.fTitre); //Mettre les find en dehors du if
                 titre.setText(film.getTitle());
                 TextView date = (TextView) findViewById(R.id.fDate);
-                date.setText(date.getText() +" "+ film.getYear());
+                date.setText("Date de sortie : "+ film.getYear());
                 TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
-                realisateur.setText(realisateur.getText() +" "+ film.getDirector());
+                realisateur.setText("Réalisateur : "+ film.getDirector());
                 TextView acteurs = (TextView) findViewById(R.id.fActeurs);
-                acteurs.setText(acteurs.getText() +" "+ film.getActors());
+                acteurs.setText("Acteurs : "+ film.getActors());
                 TextView pays = (TextView) findViewById(R.id.fPays);
-                pays.setText(pays.getText() +" "+ film.getCountry());
+                pays.setText("Pays : "+ film.getCountry());
                 TextView genre = (TextView) findViewById(R.id.fGenre);
-                genre.setText(genre.getText() +" "+ film.getGenre());
+                genre.setText("Genre : "+ film.getGenre());
                 TextView resume = (TextView) findViewById(R.id.fResume);
-                resume.setText(resume.getText() +" "+ film.getPlot());
+                resume.setText("Résumé : "+ film.getPlot());
                 TextView rated = (TextView) findViewById(R.id.fRated);
-                rated.setText(rated.getText() +" "+ film.getRated());
+                rated.setText("Rated : "+ film.getRated());
                 TextView duree = (TextView) findViewById(R.id.fDuree);
-                duree.setText(duree.getText() +" "+ film.getRuntime());
+                duree.setText("Durée : "+ film.getRuntime());
                 TextView recompenses = (TextView) findViewById(R.id.fAwards);
-                recompenses.setText(recompenses.getText() +" "+ film.getAwards());
+                recompenses.setText("Récompenses : "+ film.getAwards());
+                Button bouton = (Button) findViewById(R.id.boutonAjout);
+                bouton.setText("Supprimer");
             }
         } else {
             Runnable recherche = new Runnable() {
@@ -97,23 +98,25 @@ public class FicheFilm extends AppCompatActivity {
                                 TextView titre = (TextView) findViewById(R.id.fTitre);
                                 titre.setText(film.getTitle());
                                 TextView date = (TextView) findViewById(R.id.fDate);
-                                date.setText(date.getText() +" "+ film.getYear());
+                                date.setText("Date de sortie : "+ film.getYear());
                                 TextView realisateur = (TextView) findViewById(R.id.fRéalisateur);
-                                realisateur.setText(realisateur.getText() +" "+ film.getDirector());
+                                realisateur.setText("Réalisateur : "+ film.getDirector());
                                 TextView acteurs = (TextView) findViewById(R.id.fActeurs);
-                                acteurs.setText(acteurs.getText() +" "+ film.getActors());
+                                acteurs.setText("Acteurs : "+ film.getActors());
                                 TextView pays = (TextView) findViewById(R.id.fPays);
-                                pays.setText(pays.getText() +" "+ film.getCountry());
+                                pays.setText("Pays : "+ film.getCountry());
                                 TextView genre = (TextView) findViewById(R.id.fGenre);
-                                genre.setText(genre.getText() +" "+ film.getGenre());
+                                genre.setText("Genre : "+ film.getGenre());
                                 TextView resume = (TextView) findViewById(R.id.fResume);
-                                resume.setText(resume.getText() +" "+ film.getPlot());
+                                resume.setText("Résumé : "+ film.getPlot());
                                 TextView rated = (TextView) findViewById(R.id.fRated);
-                                rated.setText(rated.getText() +" "+ film.getRated());
+                                rated.setText("Rated : "+ film.getRated());
                                 TextView duree = (TextView) findViewById(R.id.fDuree);
-                                duree.setText(duree.getText() +" "+ film.getRuntime());
+                                duree.setText("Durée : "+ film.getRuntime());
                                 TextView recompenses = (TextView) findViewById(R.id.fAwards);
-                                recompenses.setText(recompenses.getText() +" "+ film.getAwards());
+                                recompenses.setText("Récompenses : "+ film.getAwards());
+                                Button bouton = (Button) findViewById(R.id.boutonAjout);
+                                bouton.setText("Ajouter");
                             }
                         });
                     } catch (IOException e) {
@@ -127,6 +130,9 @@ public class FicheFilm extends AppCompatActivity {
                 }
             };
             new Thread(recherche).start();
+            cursor.close();
+            readableDB.close();
+            helper.close();
         }
 
 
@@ -145,11 +151,25 @@ public class FicheFilm extends AppCompatActivity {
 
     }
 
-    String rechercheInternet(String url) throws IOException {
+    public String rechercheInternet(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
         return response.body().string();
+    }
+
+    public void clickAjout(View view) {
+        Button bouton = (Button) findViewById(R.id.boutonAjout);
+        if(bouton.getText().toString().equals("Supprimer")){
+            film.supprimer(this);
+            bouton.setText("Ajouter");
+            Toast.makeText(this,"Supprimé",Toast.LENGTH_SHORT).show();
+        }
+        else {
+            film.inserer(this);
+            bouton.setText("Supprimer");
+            Toast.makeText(this,"Ajouté",Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -174,6 +194,8 @@ public class FicheFilm extends AppCompatActivity {
         outState.putString("durée", duree.getText().toString());
         TextView recompenses = (TextView) findViewById(R.id.fAwards);
         outState.putString("récompenses",recompenses.getText().toString());
+        Button bouton = (Button) findViewById(R.id.boutonAjout);
+        outState.putString("bouton",bouton.getText().toString());
         super.onSaveInstanceState(outState);
     }
 
@@ -200,5 +222,7 @@ public class FicheFilm extends AppCompatActivity {
         duree.setText(savedInstanceState.getString("durée"));
         TextView recompenses = (TextView) findViewById(R.id.fAwards);
         recompenses.setText(savedInstanceState.getString("récompenses"));
+        Button bouton = (Button) findViewById(R.id.boutonAjout);
+        bouton.setText(savedInstanceState.getString("bouton"));
     }
 }

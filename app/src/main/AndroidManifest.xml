@@ -18,9 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EcranFilm" />
-        <activity android:name=".FicheFilm" />
-        <activity android:name=".EcranRechercheFilm"></activity>
+        <activity android:name=".PackageFilm.EcranFilm" />
+        <activity android:name=".PackageFilm.FicheFilm" />
+        <activity android:name=".PackageFilm.EcranRechercheFilm" />
+        <activity android:name=".PackageSerie.EcranSerie" />
+        <activity android:name=".PackageSerie.FicheSerie" />
+        <activity android:name=".PackageSerie.EcranRechercheSerie"></activity>
     </application>
 
 </manifest>

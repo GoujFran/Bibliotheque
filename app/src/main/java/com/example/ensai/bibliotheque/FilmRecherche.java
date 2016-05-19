@@ -54,3 +54,4 @@ public class FilmRecherche {
         this.poster = poster;
     }
 }
+

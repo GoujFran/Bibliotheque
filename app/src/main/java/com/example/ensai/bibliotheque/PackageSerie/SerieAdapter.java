@@ -1,4 +1,4 @@
-package com.example.ensai.bibliotheque;
+package com.example.ensai.bibliotheque.PackageSerie;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,17 +7,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.ensai.bibliotheque.PackageSerie.Serie;
+import com.example.ensai.bibliotheque.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by ensai on 10/05/16.
+ * Created by ensai on 19/05/16.
  */
-public class FilmAdapter extends BaseAdapter {
-    List<Film> liste = new ArrayList<Film>();
+public class SerieAdapter extends BaseAdapter {
+    List<Serie> liste = new ArrayList<Serie>();
     Context context;
 
-    public FilmAdapter(Context context, List<Film> liste) {
+    public SerieAdapter(Context context, List<Serie> liste) {
         this.context = context;
         this.liste = liste;
     }
@@ -39,12 +42,12 @@ public class FilmAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Film film = (Film) getItem(position);
-        View view =  LayoutInflater.from(context).inflate(R.layout.item_film, parent, false);
-        TextView titre = (TextView) view.findViewById(R.id.titre);
-        TextView soustitre = (TextView) view.findViewById(R.id.realisateur);
-        titre.setText(film.getTitle() + " (" + film.getYear() + ") ");
-        soustitre.setText(film.getDirector());
+        Serie serie = (Serie) getItem(position);
+        View view =  LayoutInflater.from(context).inflate(R.layout.item_serie, parent, false);
+        TextView titre = (TextView) view.findViewById(R.id.titreSerie);
+        TextView soustitre = (TextView) view.findViewById(R.id.saisons);
+        titre.setText(serie.getTitle() + " (" + serie.getYear() + ") ");
+        soustitre.setText(serie.getDirector());
         return view;
     }
 

@@ -32,7 +32,8 @@
             android:layout_weight="1"
             android:paddingTop="10sp"
             android:paddingBottom="10sp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            android:onClick="clickSeries"/>
     </LinearLayout>
     <Button
         android:layout_width="match_parent"

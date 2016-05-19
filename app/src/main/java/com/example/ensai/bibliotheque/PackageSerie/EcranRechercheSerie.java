@@ -1,56 +1,58 @@
-package com.example.ensai.bibliotheque;
+package com.example.ensai.bibliotheque.PackageSerie;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ensai.bibliotheque.FilmRecherche;
+import com.example.ensai.bibliotheque.R;
+import com.example.ensai.bibliotheque.Recherche;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EcranRechercheFilm extends AppCompatActivity {
+public class EcranRechercheSerie extends AppCompatActivity {
 
-    private List<Film> listeFilm = new ArrayList<Film>();
+    private List<Serie> listeSerie = new ArrayList<Serie>();
     private ArrayList<String> listeBase = new ArrayList<String>();
     private Context contexte = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ecran_recherche_film);
-        ListView listView = (ListView) findViewById(R.id.listeFilmRecherche);
+        setContentView(R.layout.activity_ecran_recherche_serie);
+        ListView listView = (ListView) findViewById(R.id.listeSerieRecherche);
         Intent intent = getIntent();
         String contenuRecherche = intent.getStringExtra("contenuRecherche");
         String json = intent.getStringExtra("json");
-        TextView textView = (TextView) findViewById(R.id.resultat);
+        TextView textView = (TextView) findViewById(R.id.sresultat);
         textView.setText(textView.getText().toString() + " : " + contenuRecherche);
         if(json.equals("{\"Response\":\"False\",\"Error\":\"Movie not found!\"}")){
-            TextView textVide = (TextView) findViewById(R.id.pasDeResultats);
-            textVide.setText("Il n'y a pas de films correspondants à votre recherche.");
+            TextView textVide = (TextView) findViewById(R.id.spasDeResultats);
+            textVide.setText("Il n'y a pas de séries correspondants à votre recherche.");
         } else {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             Recherche recherche = gson.fromJson(json, Recherche.class);
             List<FilmRecherche> listeRecherche = recherche.getSearch();
             for(int i=0;i<listeRecherche.size();i++){
-                if(listeRecherche.get(i).getType().equals("movie")){
-                    Film film = new Film();
+                if(listeRecherche.get(i).getType().equals("series")){
+                    Serie film = new Serie();
                     film.setTitle(listeRecherche.get(i).getTitle());
                     film.setYear(listeRecherche.get(i).getYear());
                     film.setImdbID(listeRecherche.get(i).getImdbID());
                     film.setDirector("");
-                    listeFilm.add(film);
+                    listeSerie.add(film);
                     listeBase.add(film.getTitle() + " (" + film.getYear() + ") ");
                 }
             }
-            final FilmAdapter adapter = new FilmAdapter(this,listeFilm);
+            final SerieAdapter adapter = new SerieAdapter(this,listeSerie);
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,9 +67,9 @@ public class EcranRechercheFilm extends AppCompatActivity {
     }
 
     public void lancerFiche(Context contexte, int index) {
-        Intent intent = new Intent(contexte, FicheFilm.class);
-        Film film = listeFilm.get(index);
-        intent.putExtra("id", film.getImdbID());
+        Intent intent = new Intent(contexte, FicheSerie.class);
+        Serie serie = listeSerie.get(index);
+        intent.putExtra("id", serie.getImdbID());
         startActivity(intent);
     }
 }

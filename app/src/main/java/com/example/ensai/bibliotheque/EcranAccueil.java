@@ -2,18 +2,15 @@ package com.example.ensai.bibliotheque;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.ensai.bibliotheque.PackageFilm.EcranFilm;
+import com.example.ensai.bibliotheque.PackageFilm.Film;
+import com.example.ensai.bibliotheque.PackageSerie.EcranSerie;
 
 import java.io.IOException;
-import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -76,6 +73,11 @@ public class EcranAccueil extends AppCompatActivity {
 
     public void clickFilms(View v) {
         Intent intent = new Intent(this, EcranFilm.class);
+        startActivity(intent);
+    }
+
+    public void clickSeries(View v) {
+        Intent intent = new Intent(this, EcranSerie.class);
         startActivity(intent);
     }
 

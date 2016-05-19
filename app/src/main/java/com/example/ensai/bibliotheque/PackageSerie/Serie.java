@@ -1,17 +1,16 @@
-package com.example.ensai.bibliotheque;
+package com.example.ensai.bibliotheque.PackageSerie;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.ensai.bibliotheque.MyOpenHelper;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
- * Created by ensai on 10/05/16.
+ * Created by ensai on 19/05/16.
  */
-public class Film {
+public class Serie {
     @SerializedName("Title") private String title;
     @SerializedName("Year") private String year;
     @SerializedName("Rated")private String rated;
@@ -33,11 +32,11 @@ public class Film {
     @SerializedName("Type") private String type;
     @SerializedName("Response") private String response;
 
-    public Film() {}
+    public Serie() {}
 
     @Override
     public String toString() {
-        return "Film{" +
+        return "Série{" +
                 "title='" + title + '\'' +
                 ", year='" + year + '\'' +
                 ", rated='" + rated + '\'' +
@@ -241,6 +240,17 @@ public class Film {
         values.put("metascore",metascore);
         values.put("imdbRating",imdbRating);
         values.put("imdbID", imdbID);
-        long rowID = writableDB.insert("films", null, values);
+        long rowID = writableDB.insert("series", null, values);
+        writableDB.close();
+        helper.close();
+    }
+
+    public void supprimer(Context contexte) {
+        MyOpenHelper helper = new MyOpenHelper(contexte);
+        SQLiteDatabase writableDB = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        writableDB.delete("series","imdbID=?",new String[] {getImdbID()});
+        writableDB.close();
+        helper.close();
     }
 }

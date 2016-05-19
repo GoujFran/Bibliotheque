@@ -18,17 +18,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE films (title TEXT , year TEXT, rated TEXT, released TEXT, runtime TEXT, genre TEXT, director TEXT, writer TEXT, actors TEXT, plot TEXT,country TEXT," +
                 "awards TEXT, poster TEXT, metascore TEXT, imdbRating TEXT, imdbID TEXT PRIMARY KEY)");
-        ContentValues values = new ContentValues();
-        values.put("title","Frozen");
-        values.put("year","2013");
-        values.put("director","Chris Buck");
-        values.put("imdbID", "tt2294629");
-        long rowID = db.insert("films",null,values);
-        values.put("title","Frozen River");
-        values.put("year","2008");
-        values.put("director","Chris Buck");
-        values.put("imdbID","tt0978759");
-        rowID = db.insert("films",null,values);
+        db.execSQL("CREATE TABLE series (title TEXT , year TEXT, rated TEXT, released TEXT, runtime TEXT, genre TEXT, director TEXT, writer TEXT, actors TEXT, plot TEXT,country TEXT," +
+                "awards TEXT, poster TEXT, metascore TEXT, imdbRating TEXT, imdbID TEXT PRIMARY KEY)");
     }
 
     @Override

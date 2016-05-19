@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/ecranFilm"
-    tools:context=".PackageFilm.EcranFilm">
-
+    tools:context="com.example.ensai.bibliotheque.PackageSerie.EcranSerie">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,16 +13,16 @@
         <AutoCompleteTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Rentrez votre film"
+            android:hint="Rentrez votre série"
             android:layout_weight="1"
-            android:id="@+id/autofilm" />
+            android:id="@+id/autoSerie" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rechercher"
-            android:id="@+id/boutonRecherche"
-            android:onClick="clickRechercher"/>
+            android:id="@+id/boutonRechercheSerie"
+            android:onClick="clickRechercherSerie"/>
     </LinearLayout>
 
     <TextView
@@ -35,5 +33,6 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listeFilm" />
+        android:id="@+id/listeSerie" />
+
 </LinearLayout>

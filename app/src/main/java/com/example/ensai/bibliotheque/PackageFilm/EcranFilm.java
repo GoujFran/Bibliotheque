@@ -1,4 +1,4 @@
-package com.example.ensai.bibliotheque;
+package com.example.ensai.bibliotheque.PackageFilm;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +15,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ensai.bibliotheque.MyOpenHelper;
+import com.example.ensai.bibliotheque.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,56 +32,19 @@ public class EcranFilm extends AppCompatActivity {
     private ArrayList<String> listeBase = new ArrayList<String>();
     private ArrayList<String> listeTitre = new ArrayList<String>();
     private Context contexte = this;
+    private ListView listView;
+    private AutoCompleteTextView autoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecran_film);
 
-        //Afficher autocomplétion
-        final ListView listView = (ListView) findViewById(R.id.listeFilm);
-        MyOpenHelper helper = new MyOpenHelper(this);
-        SQLiteDatabase readableDB = helper.getReadableDatabase();
-        Cursor cursor = readableDB.rawQuery("SELECT * FROM films;", null);
-        int nbRows = cursor.getCount();
-        while(cursor.moveToNext()){
-            Film frozen = new Film();
-            frozen.setTitle(cursor.getString(0));
-            frozen.setYear(cursor.getString(1));
-            frozen.setDirector(cursor.getString(6));
-            frozen.setPoster(cursor.getString(12));
-            frozen.setImdbID(cursor.getString(15));
-            liste.add(frozen);
-            listeTitre.add(frozen.getTitle());
-            listeBase.add(frozen.getTitle() + " (" + frozen.getYear() + ") ");
-        }
-        cursor.close();
-        final AutoCompleteTextView autoView = (AutoCompleteTextView) findViewById(R.id.autofilm);
-        ArrayAdapter<String> adapterAuto = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listeBase);
-        autoView.setAdapter(adapterAuto);
+        listView = (ListView) findViewById(R.id.listeFilm);
+        autoView = (AutoCompleteTextView) findViewById(R.id.autofilm);
 
-        //Afficher la fiche du film
-        autoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int index = listeBase.indexOf(autoView.getText().toString());
-                lancerFiche(contexte, index);
-            }
-        });
-
-        //Aficher la liste des filmq
-        final FilmAdapter adapter = new FilmAdapter(this,liste);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView textView = adapter.getTextView(view);
-                int index = listeBase.indexOf(textView.getText().toString());
-                lancerFiche(contexte,index);
-            }
-        });
-
+        afficherAutoCompletion();
+        afficherListeFilm();
     }
     
     public void lancerFiche(Context contexte, int index) {
@@ -127,17 +92,79 @@ public class EcranFilm extends AppCompatActivity {
         }
     }
 
+    public void afficherAutoCompletion(){
+        //Afficher autocomplétion
+        liste.clear();
+        listeTitre.clear();
+        listeBase.clear();
+        MyOpenHelper helper = new MyOpenHelper(this);
+        SQLiteDatabase readableDB = helper.getReadableDatabase();
+        Cursor cursor = readableDB.rawQuery("SELECT * FROM films;", null);
+        int nbRows = cursor.getCount();
+        while(cursor.moveToNext()){
+            Film film = new Film();
+            film.setTitle(cursor.getString(0));
+            film.setYear(cursor.getString(1));
+            film.setDirector(cursor.getString(6));
+            film.setPoster(cursor.getString(12));
+            film.setImdbID(cursor.getString(15));
+            liste.add(film);
+            listeTitre.add(film.getTitle());
+            listeBase.add(film.getTitle() + " (" + film.getYear() + ") ");
+        }
+        cursor.close();
+        ArrayAdapter<String> adapterAuto = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, listeBase);
+        autoView.setAdapter(adapterAuto);
+
+        //Afficher la fiche du film
+        autoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int index = listeBase.indexOf(autoView.getText().toString());
+                lancerFiche(contexte, index);
+            }
+        });
+    }
+
+    public void afficherListeFilm(){
+        //Aficher la liste des films
+        final FilmAdapter adapter = new FilmAdapter(this,liste);
+        listView.setAdapter(adapter);
+
+        //Afficher la fiche du film
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView = adapter.getTextView(view);
+                int index = listeBase.indexOf(textView.getText().toString());
+                lancerFiche(contexte,index);
+            }
+        });
+    }
+
     public boolean isOnline() {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    String rechercheInternet(String url) throws IOException {
+    public String rechercheInternet(String url) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        afficherAutoCompletion();
+        afficherListeFilm();
+        autoView.setText("");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
