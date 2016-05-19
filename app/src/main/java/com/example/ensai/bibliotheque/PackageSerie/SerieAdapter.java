@@ -47,12 +47,12 @@ public class SerieAdapter extends BaseAdapter {
         TextView titre = (TextView) view.findViewById(R.id.titreSerie);
         TextView soustitre = (TextView) view.findViewById(R.id.saisons);
         titre.setText(serie.getTitle() + " (" + serie.getYear() + ") ");
-        soustitre.setText(serie.getDirector());
+        soustitre.setText("");
         return view;
     }
 
     public TextView getTextView(View view) {
-        TextView titre = (TextView) view.findViewById(R.id.titre);
+        TextView titre = (TextView) view.findViewById(R.id.titreSerie);
         return titre;
     }
 }

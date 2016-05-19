@@ -2,9 +2,6 @@ package com.example.ensai.bibliotheque;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by ensai on 13/05/16.
- */
 public class FilmRecherche {
     @SerializedName("Title") private String title;
     @SerializedName("Year") private String year;

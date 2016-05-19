@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by ensai on 17/05/16.
- */
 public class Recherche {
     @SerializedName("Search") private List<FilmRecherche> search;
     private String totalResults;

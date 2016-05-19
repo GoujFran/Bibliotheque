@@ -159,8 +159,8 @@ public class FicheSerie extends AppCompatActivity {
         return response.body().string();
     }
 
-    public void clickAjout(View view) {
-        Button bouton = (Button) findViewById(R.id.boutonAjout);
+    public void clickAjoutSerie(View view) {
+        Button bouton = (Button) findViewById(R.id.sBoutonAjout);
         if(bouton.getText().toString().equals("Supprimer")){
             serie.supprimer(this);
             bouton.setText("Ajouter");

@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -83,7 +84,12 @@ public class EcranSerie extends AppCompatActivity {
                             String json = rechercheInternet("http://www.omdbapi.com/?s=" + contenu + "&y=&plot=short&r=json");
                             lancerRecherche(contexte,contenu,json);
                         } catch (IOException e) {
-                            Toast.makeText(contexte, "Problème de connexion", Toast.LENGTH_LONG).show();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(contexte, "Problème de connexion", Toast.LENGTH_LONG).show();
+                                }
+                            });
                         }
                     }
                 };

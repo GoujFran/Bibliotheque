@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -43,13 +44,13 @@ public class EcranRechercheSerie extends AppCompatActivity {
             List<FilmRecherche> listeRecherche = recherche.getSearch();
             for(int i=0;i<listeRecherche.size();i++){
                 if(listeRecherche.get(i).getType().equals("series")){
-                    Serie film = new Serie();
-                    film.setTitle(listeRecherche.get(i).getTitle());
-                    film.setYear(listeRecherche.get(i).getYear());
-                    film.setImdbID(listeRecherche.get(i).getImdbID());
-                    film.setDirector("");
-                    listeSerie.add(film);
-                    listeBase.add(film.getTitle() + " (" + film.getYear() + ") ");
+                    Serie serie = new Serie();
+                    serie.setTitle(listeRecherche.get(i).getTitle());
+                    serie.setYear(listeRecherche.get(i).getYear());
+                    serie.setImdbID(listeRecherche.get(i).getImdbID());
+                    serie.setDirector("");
+                    listeSerie.add(serie);
+                    listeBase.add(serie.getTitle() + " (" + serie.getYear() + ") ");
                 }
             }
             final SerieAdapter adapter = new SerieAdapter(this,listeSerie);
@@ -58,7 +59,7 @@ public class EcranRechercheSerie extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    TextView textView = adapter.getTextView(view);
+                    TextView textView = adapter.getTextView(view); //ne pointe sur rien
                     int index = listeBase.indexOf(textView.getText().toString());
                     lancerFiche(contexte, index);
                 }
