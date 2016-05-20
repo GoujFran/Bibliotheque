@@ -19,7 +19,8 @@ public class MyOpenHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE films (title TEXT , year TEXT, rated TEXT, released TEXT, runtime TEXT, genre TEXT, director TEXT, writer TEXT, actors TEXT, plot TEXT,country TEXT," +
                 "awards TEXT, poster TEXT, metascore TEXT, imdbRating TEXT, imdbID TEXT PRIMARY KEY)");
         db.execSQL("CREATE TABLE series (title TEXT , year TEXT, rated TEXT, released TEXT, runtime TEXT, genre TEXT, director TEXT, writer TEXT, actors TEXT, plot TEXT,country TEXT," +
-                "awards TEXT, poster TEXT, metascore TEXT, imdbRating TEXT, imdbID TEXT PRIMARY KEY)");
+                "awards TEXT, poster TEXT, metascore TEXT, imdbRating TEXT,  imdbID TEXT PRIMARY KEY, nbSaisons TEXT)");
+        db.execSQL("CREATE TABLE saisons (numero TEXT ,imdbID TEXT, saisonID TEXT PRIMARY KEY, nbEpisodes TEXT)");
     }
 
     @Override

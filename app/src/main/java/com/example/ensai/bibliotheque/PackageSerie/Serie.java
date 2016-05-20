@@ -220,7 +220,7 @@ public class Serie {
         return type;
     }
 
-    public void inserer(Context contexte) {
+    public void inserer(Context contexte, String nbSaisons) {
         MyOpenHelper helper = new MyOpenHelper(contexte);
         SQLiteDatabase writableDB = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -240,6 +240,7 @@ public class Serie {
         values.put("metascore",metascore);
         values.put("imdbRating",imdbRating);
         values.put("imdbID", imdbID);
+        values.put("nbSaisons", nbSaisons);
         long rowID = writableDB.insert("series", null, values);
         writableDB.close();
         helper.close();
@@ -250,6 +251,7 @@ public class Serie {
         SQLiteDatabase writableDB = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
         writableDB.delete("series","imdbID=?",new String[] {getImdbID()});
+        writableDB.delete("saisons","imdbID=?",new String[] {getImdbID()});
         writableDB.close();
         helper.close();
     }

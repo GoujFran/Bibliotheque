@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,6 +30,8 @@ public class FicheSerie extends AppCompatActivity {
 
     private Serie serie = new Serie();
     private Context contexte = this;
+    private List<Saison> listeSaison = new ArrayList<Saison>();
+    private int nbSaison;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class FicheSerie extends AppCompatActivity {
                 serie.setMetascore(cursor.getString(13));
                 serie.setImdbRating(cursor.getString(14));
                 serie.setImdbID(cursor.getString(15));
+                nbSaison = Integer.parseInt(cursor.getString(16));
 
                 TextView titre = (TextView) findViewById(R.id.sTitre); //Mettre les find en dehors du if
                 titre.setText(serie.getTitle());
@@ -120,6 +125,21 @@ public class FicheSerie extends AppCompatActivity {
                                 bouton.setText("Ajouter");
                             }
                         });
+
+                        //Parser Saison
+                        int i = 1;
+                        String url = "http://www.omdbapi.com/?i=" + serie.getImdbID() + "&Season=" + i;
+                        String jsonSaison = rechercheInternet(url);
+
+                        while (!jsonSaison.equals("{\"Response\":\"False\",\"Error\":\"Series or season not found!\"}")) {
+                            i++;
+                            Saison saison = gson.fromJson(jsonSaison, Saison.class);
+                            listeSaison.add(saison);
+                            url = "http://www.omdbapi.com/?i=" + serie.getImdbID() + "&Season=" + i;
+                            jsonSaison = rechercheInternet(url);
+                        }
+                        nbSaison = listeSaison.size();
+
                     } catch (IOException e) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -167,10 +187,22 @@ public class FicheSerie extends AppCompatActivity {
             Toast.makeText(this,"Supprimé",Toast.LENGTH_SHORT).show();
         }
         else {
-            serie.inserer(this);
+            serie.inserer(this,""+nbSaison);
+            for(int i=0;i<nbSaison;i++){
+                listeSaison.get(i).inserer(this,serie.getImdbID());
+            }
             bouton.setText("Supprimer");
             Toast.makeText(this,"Ajouté",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void clickBoutonSaison(View view){
+        Button bouton = (Button) findViewById(R.id.sBoutonAjout);
+        Intent intent = new Intent(this,EcranSaison.class);
+        intent.putExtra("id",serie.getImdbID());
+        intent.putExtra("bouton",bouton.getText().toString());
+        intent.putExtra("nbSaisons",nbSaison);
+        startActivity(intent);
     }
 
     @Override
