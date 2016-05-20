@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ public class FicheSerie extends AppCompatActivity {
     private Serie serie = new Serie();
     private Context contexte = this;
     private List<Saison> listeSaison = new ArrayList<Saison>();
+    private ArrayList<Integer> listeNbEpisodes = new ArrayList<Integer>();
     private int nbSaison;
 
     @Override
@@ -135,6 +137,7 @@ public class FicheSerie extends AppCompatActivity {
                             i++;
                             Saison saison = gson.fromJson(jsonSaison, Saison.class);
                             listeSaison.add(saison);
+                            listeNbEpisodes.add(listeSaison.get(i - 2).getEpisodes().size());
                             url = "http://www.omdbapi.com/?i=" + serie.getImdbID() + "&Season=" + i;
                             jsonSaison = rechercheInternet(url);
                         }
@@ -202,6 +205,7 @@ public class FicheSerie extends AppCompatActivity {
         intent.putExtra("id",serie.getImdbID());
         intent.putExtra("bouton",bouton.getText().toString());
         intent.putExtra("nbSaisons",nbSaison);
+        intent.putIntegerArrayListExtra("listeNbEpisodes",listeNbEpisodes);
         startActivity(intent);
     }
 

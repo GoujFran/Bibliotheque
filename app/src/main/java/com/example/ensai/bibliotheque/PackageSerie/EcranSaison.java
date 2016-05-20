@@ -33,9 +33,9 @@ import okhttp3.Response;
 public class EcranSaison extends AppCompatActivity {
 
     private Context contexte = this;
-    private String id;
-    private String bouton;
+    private String imdbID;
     private int nbSaison;
+    private ArrayList<Integer> listeNbEpisodes = new ArrayList<Integer>();
     ListView listView;
 
     @Override
@@ -44,9 +44,9 @@ public class EcranSaison extends AppCompatActivity {
         setContentView(R.layout.activity_ecran_saison);
 
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
-        bouton = intent.getStringExtra("bouton");
-        nbSaison = intent.getIntExtra("nbSaisons",1);
+        imdbID = intent.getStringExtra("id");
+        nbSaison = intent.getIntExtra("nbSaisons", 1);
+        listeNbEpisodes = intent.getIntegerArrayListExtra("listeNbEpisodes");
 
         listView = (ListView) findViewById(R.id.listeSaison);
 
@@ -54,23 +54,27 @@ public class EcranSaison extends AppCompatActivity {
     }
 
     public void afficherListeSaison() {
-        List<String> listeSaison = new ArrayList<String>();
+        final List<String> listeSaison = new ArrayList<String>();
 
         for (int i = 1; i <= nbSaison; i++) {
             String texte = "Saison " + i;
             listeSaison.add(texte);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(contexte, android.R.layout.simple_list_item_1, listeSaison);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(contexte, android.R.layout.simple_list_item_1, listeSaison);
         listView.setAdapter(adapter);
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    TextView textView = adapter.getTextView(view);
-                                    //lancerFiche(contexte, index);
-                                }
-                            });*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    int saison = position + 1;
+                    Intent intent = new Intent(contexte,FicheSaison.class);
+                    intent.putExtra("id",imdbID);
+                    intent.putExtra("saison",saison);
+                    intent.putIntegerArrayListExtra("listeNbEpisodes", listeNbEpisodes);
+                    startActivity(intent);
+                }
+            });
     }
 
     public boolean isOnline() {
