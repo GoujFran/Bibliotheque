@@ -205,6 +205,7 @@ public class FicheSerie extends AppCompatActivity {
         intent.putExtra("id",serie.getImdbID());
         intent.putExtra("bouton",bouton.getText().toString());
         intent.putExtra("nbSaisons",nbSaison);
+        intent.putExtra("nomSerie", serie.getTitle());
         intent.putIntegerArrayListExtra("listeNbEpisodes",listeNbEpisodes);
         startActivity(intent);
     }

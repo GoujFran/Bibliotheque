@@ -35,6 +35,7 @@ public class EcranSaison extends AppCompatActivity {
     private Context contexte = this;
     private String imdbID;
     private int nbSaison;
+    private String nomSerie;
     private ArrayList<Integer> listeNbEpisodes = new ArrayList<Integer>();
     ListView listView;
 
@@ -46,11 +47,15 @@ public class EcranSaison extends AppCompatActivity {
         Intent intent = getIntent();
         imdbID = intent.getStringExtra("id");
         nbSaison = intent.getIntExtra("nbSaisons", 1);
+        nomSerie = intent.getStringExtra("nomSerie");
         listeNbEpisodes = intent.getIntegerArrayListExtra("listeNbEpisodes");
 
         listView = (ListView) findViewById(R.id.listeSaison);
 
         afficherListeSaison();
+
+        TextView textView = (TextView) findViewById(R.id.sTitre2);
+        textView.setText(nomSerie);
     }
 
     public void afficherListeSaison() {
@@ -71,6 +76,7 @@ public class EcranSaison extends AppCompatActivity {
                     Intent intent = new Intent(contexte,FicheSaison.class);
                     intent.putExtra("id",imdbID);
                     intent.putExtra("saison",saison);
+                    intent.putExtra("nomSerie", nomSerie);
                     intent.putIntegerArrayListExtra("listeNbEpisodes", listeNbEpisodes);
                     startActivity(intent);
                 }

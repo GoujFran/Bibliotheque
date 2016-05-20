@@ -25,7 +25,8 @@
         <activity android:name=".PackageSerie.FicheSerie" />
         <activity android:name=".PackageSerie.EcranRechercheSerie" />
         <activity android:name=".PackageSerie.EcranSaison" />
-        <activity android:name=".PackageSerie.FicheSaison"></activity>
+        <activity android:name=".PackageSerie.FicheSaison" />
+        <activity android:name=".PackageSerie.FicheEpisode"></activity>
     </application>
 
 </manifest>

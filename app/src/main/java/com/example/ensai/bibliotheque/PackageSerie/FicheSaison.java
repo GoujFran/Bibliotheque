@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.ensai.bibliotheque.MyOpenHelper;
 import com.example.ensai.bibliotheque.R;
@@ -22,6 +23,7 @@ public class FicheSaison extends AppCompatActivity {
 
     private String id;
     private int saison;
+    private String nomSerie;
     private ArrayList<Integer> listeNbEpisode = new ArrayList<Integer>();
     private ListView listView;
     private Context contexte = this;
@@ -36,7 +38,7 @@ public class FicheSaison extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
         saison = intent.getIntExtra("saison", 0);
-        Log.e("Tag",""+saison);
+        nomSerie = intent.getStringExtra("nomSerie");
         listeNbEpisode = intent.getIntegerArrayListExtra("listeNbEpisodes");
 
         if(listeNbEpisode.size()==0){
@@ -53,6 +55,9 @@ public class FicheSaison extends AppCompatActivity {
 
         afficherListeEpisodes();
 
+        TextView textView = (TextView) findViewById(R.id.sTitre3);
+        textView.setText(nomSerie);
+
     }
 
     public void afficherListeEpisodes() {
@@ -65,16 +70,16 @@ public class FicheSaison extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listeEpisodes);
         listView.setAdapter(adapter);
 
-        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String saison = adapter.getItem(position);
-                Intent intent = new Intent(contexte,FicheSaison.class);
-                intent.putExtra("id",id);
+                int episode = position+1;
+                Intent intent = new Intent(contexte,FicheEpisode.class);
+                /*intent.putExtra("id",id);
                 intent.putExtra("Saison",saison);
-                intent.putIntegerArrayListExtra("listeNbEpisodes",listeEpisodes);
+                intent.putIntegerArrayListExtra("listeNbEpisodes",listeEpisodes);*/
                 startActivity(intent);
             }
-        });*/
+        });
     }
 }
