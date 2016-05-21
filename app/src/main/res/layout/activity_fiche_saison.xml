@@ -16,6 +16,16 @@
         android:paddingBottom="10sp"
         android:textAlignment="center"
         android:background="@android:color/holo_purple"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sSaison"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:paddingTop="10sp"
+        android:paddingBottom="10sp"
+        android:textAlignment="center"
+        android:background="@android:color/darker_gray"/>
 
     <ListView
         android:layout_width="match_parent"

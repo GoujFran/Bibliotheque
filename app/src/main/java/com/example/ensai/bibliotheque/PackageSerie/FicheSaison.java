@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FicheSaison extends AppCompatActivity {
 
-    private String id;
+    private String imdbID;
     private int saison;
     private String nomSerie;
     private ArrayList<Integer> listeNbEpisode = new ArrayList<Integer>();
@@ -36,15 +36,20 @@ public class FicheSaison extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.listeEpisode);
 
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
+        imdbID = intent.getStringExtra("id");
         saison = intent.getIntExtra("saison", 0);
         nomSerie = intent.getStringExtra("nomSerie");
         listeNbEpisode = intent.getIntegerArrayListExtra("listeNbEpisodes");
 
+        TextView textView = (TextView) findViewById(R.id.sTitre3);
+        textView.setText(nomSerie);
+        TextView textViewSaison = (TextView) findViewById(R.id.sSaison);
+        textViewSaison.setText("Saison "+saison);
+
         if(listeNbEpisode.size()==0){
             MyOpenHelper helper = new MyOpenHelper(this);
             SQLiteDatabase readableDB = helper.getReadableDatabase();
-            Cursor cursor = readableDB.rawQuery("SELECT nbEpisodes FROM saisons WHERE imdbID=?", new String[] {id});
+            Cursor cursor = readableDB.rawQuery("SELECT nbEpisodes FROM saisons WHERE imdbID=?", new String[] {imdbID});
             while(cursor.moveToNext()){
                 listeNbEpisode.add(Integer.parseInt(cursor.getString(0)));
             }
@@ -55,13 +60,11 @@ public class FicheSaison extends AppCompatActivity {
 
         afficherListeEpisodes();
 
-        TextView textView = (TextView) findViewById(R.id.sTitre3);
-        textView.setText(nomSerie);
-
     }
 
     public void afficherListeEpisodes() {
         final List<String> listeEpisodes = new ArrayList<String>();
+        Log.e("TAG", listeNbEpisode.size() + " " + saison);
         for (int i = 1; i <= listeNbEpisode.get(saison-1); i++) {
             String texte = "Episode " + i;
             listeEpisodes.add(texte);
@@ -73,11 +76,12 @@ public class FicheSaison extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int episode = position+1;
-                Intent intent = new Intent(contexte,FicheEpisode.class);
-                /*intent.putExtra("id",id);
-                intent.putExtra("Saison",saison);
-                intent.putIntegerArrayListExtra("listeNbEpisodes",listeEpisodes);*/
+                int episode = position + 1;
+                Intent intent = new Intent(contexte, FicheEpisode.class);
+                intent.putExtra("imdbID", imdbID);
+                intent.putExtra("saison", saison);
+                intent.putExtra("episode", episode);
+                intent.putExtra("nomSerie", nomSerie);
                 startActivity(intent);
             }
         });

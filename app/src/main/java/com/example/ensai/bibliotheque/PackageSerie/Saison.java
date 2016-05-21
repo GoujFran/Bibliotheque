@@ -53,16 +53,12 @@ public class Saison {
         this.title = title;
     }
 
-    public void inserer(Context contexte, String imdbID) {
-        MyOpenHelper helper = new MyOpenHelper(contexte);
-        SQLiteDatabase writableDB = helper.getWritableDatabase();
+    public void inserer(Context contexte, String imdbID, SQLiteDatabase writableDB) {
         ContentValues values = new ContentValues();
         values.put("numero",season);
         values.put("imdbID",imdbID);
-        values.put("saisonID",imdbID + "_" + season);
-        values.put("nbEpisodes",episodes.size());
+        values.put("saisonID", imdbID + "_" + season);
+        values.put("nbEpisodes", episodes.size());
         long rowID = writableDB.insert("saisons", null, values);
-        writableDB.close();
-        helper.close();
     }
 }

@@ -143,6 +143,12 @@ public class FicheSerie extends AppCompatActivity {
                         }
                         nbSaison = listeSaison.size();
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(contexte,"Saison parsées",Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     } catch (IOException e) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -190,10 +196,43 @@ public class FicheSerie extends AppCompatActivity {
             Toast.makeText(this,"Supprimé",Toast.LENGTH_SHORT).show();
         }
         else {
-            serie.inserer(this,""+nbSaison);
-            for(int i=0;i<nbSaison;i++){
-                listeSaison.get(i).inserer(this,serie.getImdbID());
-            }
+            Runnable recherche = new Runnable() {
+                @Override
+                public void run() {
+                    MyOpenHelper helper = new MyOpenHelper(contexte);
+                    SQLiteDatabase writableDB = helper.getWritableDatabase();
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    serie.inserer(contexte, "" + nbSaison,writableDB);
+                    for(int i=1;i<=nbSaison;i++){
+                        listeSaison.get(i-1).inserer(contexte,serie.getImdbID(),writableDB);
+                        for(int j=1;j<=listeSaison.get(i-1).getEpisodes().size();j++) {
+                            String urlEpisode = "http://www.omdbapi.com/?i=" + serie.getImdbID() + "&Season=" + i + "&Episode=" + j;
+                            try {
+                                String jsonEpisode = rechercheInternet(urlEpisode);
+                                Episode episode = gson.fromJson(jsonEpisode,Episode.class);
+                                episode.inserer(contexte,writableDB);
+
+                            } catch (IOException e) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(contexte, "Problème de connexion", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    writableDB.close();
+                    helper.close();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(contexte,"Episodes Ajoutés",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            };
+            new Thread(recherche).start();
             bouton.setText("Supprimer");
             Toast.makeText(this,"Ajouté",Toast.LENGTH_SHORT).show();
         }
@@ -206,7 +245,7 @@ public class FicheSerie extends AppCompatActivity {
         intent.putExtra("bouton",bouton.getText().toString());
         intent.putExtra("nbSaisons",nbSaison);
         intent.putExtra("nomSerie", serie.getTitle());
-        intent.putIntegerArrayListExtra("listeNbEpisodes",listeNbEpisodes);
+        intent.putIntegerArrayListExtra("listeNbEpisodes", listeNbEpisodes);
         startActivity(intent);
     }
 

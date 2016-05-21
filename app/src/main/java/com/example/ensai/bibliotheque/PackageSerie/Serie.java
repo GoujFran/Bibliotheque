@@ -220,9 +220,7 @@ public class Serie {
         return type;
     }
 
-    public void inserer(Context contexte, String nbSaisons) {
-        MyOpenHelper helper = new MyOpenHelper(contexte);
-        SQLiteDatabase writableDB = helper.getWritableDatabase();
+    public void inserer(Context contexte, String nbSaisons, SQLiteDatabase writableDB) {
         ContentValues values = new ContentValues();
         values.put("title",title);
         values.put("year",year);
@@ -242,8 +240,6 @@ public class Serie {
         values.put("imdbID", imdbID);
         values.put("nbSaisons", nbSaisons);
         long rowID = writableDB.insert("series", null, values);
-        writableDB.close();
-        helper.close();
     }
 
     public void supprimer(Context contexte) {
@@ -252,6 +248,7 @@ public class Serie {
         ContentValues values = new ContentValues();
         writableDB.delete("series","imdbID=?",new String[] {getImdbID()});
         writableDB.delete("saisons","imdbID=?",new String[] {getImdbID()});
+        writableDB.delete("episodes","serieID=?",new String[] {getImdbID()});
         writableDB.close();
         helper.close();
     }

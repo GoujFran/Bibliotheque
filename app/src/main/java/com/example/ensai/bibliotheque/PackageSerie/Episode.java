@@ -1,5 +1,10 @@
 package com.example.ensai.bibliotheque.PackageSerie;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.example.ensai.bibliotheque.MyOpenHelper;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -27,7 +32,7 @@ public class Episode {
     private String imdbRating;
     private String imdbVotes;
     private String imdbID;
-    private String serieID;
+    private String seriesID;
     @SerializedName("Type") private String type;
     @SerializedName("Response") private String response;
 
@@ -177,12 +182,12 @@ public class Episode {
         this.season = season;
     }
 
-    public String getSerieID() {
-        return serieID;
+    public String getSeriesID() {
+        return seriesID;
     }
 
-    public void setSerieID(String serieID) {
-        this.serieID = serieID;
+    public void setSeriesID(String seriesID) {
+        this.seriesID = seriesID;
     }
 
     public String getTitle() {
@@ -215,5 +220,29 @@ public class Episode {
 
     public void setYear(String year) {
         this.year = year;
+    }
+
+    public void inserer(Context contexte, SQLiteDatabase writableDB) {
+        ContentValues values = new ContentValues();
+        values.put("title",title);
+        values.put("year",year);
+        values.put("rated",rated);
+        values.put("released",released);
+        values.put("season",season);
+        values.put("episode",episode);
+        values.put("runtime",runtime);
+        values.put("genre",genre);
+        values.put("director",director);
+        values.put("writer",writer);
+        values.put("actors",actors);
+        values.put("plot",plot);
+        values.put("country",country);
+        values.put("awards",awards);
+        values.put("poster",poster);
+        values.put("metascore",metascore);
+        values.put("imdbRating",imdbRating);
+        values.put("imdbID", imdbID);
+        values.put("serieID", seriesID);
+        long rowID = writableDB.insert("episodes", null, values);
     }
 }
