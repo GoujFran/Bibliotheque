@@ -14,5 +14,5 @@ public class FicheEpisode extends AppCompatActivity {
         setContentView(R.layout.activity_fiche_episode);
 
         Intent intent = getIntent();
-    }
+    } 
 }
