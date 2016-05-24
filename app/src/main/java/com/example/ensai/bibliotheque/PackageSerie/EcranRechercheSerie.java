@@ -73,4 +73,14 @@ public class EcranRechercheSerie extends AppCompatActivity {
         intent.putExtra("id", serie.getImdbID());
         startActivity(intent);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

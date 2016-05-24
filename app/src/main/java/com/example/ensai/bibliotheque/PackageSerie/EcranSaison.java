@@ -95,4 +95,14 @@ public class EcranSaison extends AppCompatActivity {
         Response response = client.newCall(request).execute();
         return response.body().string();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }

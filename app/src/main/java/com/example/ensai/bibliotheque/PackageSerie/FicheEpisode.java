@@ -71,7 +71,7 @@ public class FicheEpisode extends AppCompatActivity {
                 TextView titre = (TextView) findViewById(R.id.eTitre);
                 titre.setText(episode.getTitle());
                 TextView date = (TextView) findViewById(R.id.eDate);
-                date.setText("Date de diffusion : "+ episode.getYear());
+                date.setText("Date de diffusion : "+ episode.getReleased());
                 TextView realisateur = (TextView) findViewById(R.id.eRéalisateur);
                 realisateur.setText("Réalisateur : " + episode.getDirector());
                 TextView writers = (TextView) findViewById(R.id.eWriters);
@@ -104,7 +104,7 @@ public class FicheEpisode extends AppCompatActivity {
                                     TextView titre = (TextView) findViewById(R.id.eTitre);
                                     titre.setText(episode.getTitle());
                                     TextView date = (TextView) findViewById(R.id.eDate);
-                                    date.setText("Date de diffusion : "+ episode.getYear());
+                                    date.setText("Date de diffusion : "+ episode.getReleased());
                                     TextView realisateur = (TextView) findViewById(R.id.eRéalisateur);
                                     realisateur.setText("Réalisateur : " + episode.getDirector());
                                     TextView writers = (TextView) findViewById(R.id.eWriters);
@@ -117,7 +117,6 @@ public class FicheEpisode extends AppCompatActivity {
                                     rated.setText("Rated : "+ episode.getRated());
                                     TextView duree = (TextView) findViewById(R.id.eDuree);
                                     duree.setText("Durée : "+ episode.getRuntime());
-                                    TextView recompenses = (TextView) findViewById(R.id.sAwards);
                                 }
                             });
                         } catch (IOException e) {
@@ -149,5 +148,61 @@ public class FicheEpisode extends AppCompatActivity {
         Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
         return response.body().string();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        TextView titreSaison = (TextView) findViewById(R.id.eTitreSerie);
+        outState.putString("titleSerie",titreSaison.getText().toString());
+        TextView titre = (TextView) findViewById(R.id.eTitre);
+        outState.putString("title",titre.getText().toString());
+        TextView date = (TextView) findViewById(R.id.eDate);
+        outState.putString("date",date.getText().toString());
+        TextView realisateur = (TextView) findViewById(R.id.eRéalisateur);
+        outState.putString("réalisateur", realisateur.getText().toString());
+        TextView writers = (TextView) findViewById(R.id.eWriters);
+        outState.putString("writers", writers.getText().toString());
+        TextView acteurs = (TextView) findViewById(R.id.eActeurs);
+        outState.putString("acteurs", acteurs.getText().toString());
+        TextView resume = (TextView) findViewById(R.id.eResume);
+        outState.putString("résumé", resume.getText().toString());
+        TextView rated = (TextView) findViewById(R.id.eRated);
+        outState.putString("rated", rated.getText().toString());
+        TextView duree = (TextView) findViewById(R.id.eDuree);
+        outState.putString("durée", duree.getText().toString());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        TextView titreSaison = (TextView) findViewById(R.id.eTitreSerie);
+        titreSaison.setText(savedInstanceState.getString("titleSerie"));
+        TextView titre = (TextView) findViewById(R.id.eTitre);
+        titre.setText(savedInstanceState.getString("title"));
+        TextView date = (TextView) findViewById(R.id.eDate);
+        date.setText(savedInstanceState.getString("date"));
+        TextView realisateur = (TextView) findViewById(R.id.eRéalisateur);
+        realisateur.setText(savedInstanceState.getString("réalisateur"));
+        TextView writers = (TextView) findViewById(R.id.eWriters);
+        writers.setText(savedInstanceState.getString("writers"));
+        TextView acteurs = (TextView) findViewById(R.id.eActeurs);
+        acteurs.setText(savedInstanceState.getString("acteurs"));
+        TextView resume = (TextView) findViewById(R.id.eResume);
+        resume.setText(savedInstanceState.getString("résumé"));
+        TextView rated = (TextView) findViewById(R.id.eRated);
+        rated.setText(savedInstanceState.getString("rated"));
+        TextView duree = (TextView) findViewById(R.id.eDuree);
+        duree.setText(savedInstanceState.getString("durée"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

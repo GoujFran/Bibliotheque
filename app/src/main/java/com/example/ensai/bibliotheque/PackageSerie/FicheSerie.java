@@ -146,7 +146,7 @@ public class FicheSerie extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(contexte,"Saison parsées",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(contexte,"Saisons parsées",Toast.LENGTH_SHORT).show();
                             }
                         });
                     } catch (IOException e) {
@@ -301,5 +301,15 @@ public class FicheSerie extends AppCompatActivity {
         recompenses.setText(savedInstanceState.getString("récompenses"));
         Button bouton = (Button) findViewById(R.id.sBoutonAjout);
         bouton.setText(savedInstanceState.getString("bouton"));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

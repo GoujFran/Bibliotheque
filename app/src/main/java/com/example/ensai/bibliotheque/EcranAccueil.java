@@ -31,6 +31,10 @@ public class EcranAccueil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ecran_accueil);
 
+        suggerer();
+    }
+
+    public void suggerer(){
         MyOpenHelper helper = new MyOpenHelper(this);
         SQLiteDatabase readableDB = helper.getReadableDatabase();
         Cursor cursorFilm = readableDB.rawQuery("SELECT * FROM films;",null);
@@ -53,7 +57,6 @@ public class EcranAccueil extends AppCompatActivity {
             TSerie.setText(cursorSerie.getString(0));
         }
     }
-
     public void clickFilms(View v) {
         Intent intent = new Intent(this, EcranFilm.class);
         startActivity(intent);
@@ -62,6 +65,17 @@ public class EcranAccueil extends AppCompatActivity {
     public void clickSeries(View v) {
         Intent intent = new Intent(this, EcranSerie.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        suggerer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
 }

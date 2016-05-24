@@ -228,4 +228,14 @@ public class FicheFilm extends AppCompatActivity {
         Button bouton = (Button) findViewById(R.id.boutonAjout);
         bouton.setText(savedInstanceState.getString("bouton"));
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
